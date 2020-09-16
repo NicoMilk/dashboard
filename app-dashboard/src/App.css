@@ -1,4 +1,4 @@
-.App {
+.App , .login{
   text-align: center;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #2e5bb4;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

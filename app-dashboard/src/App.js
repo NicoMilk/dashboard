@@ -1,26 +1,71 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Login from './components/Login';
+import Register from './components/Register';
+import Header from './components/Header';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import UserApi from './apis/User.js'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+
+  state = {
+    isLoggedIn: false,
+    user: {
+      name: "",
+      user: {}
+    }
+  }
+
+  componentDidMount() {
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      UserApi.auth()
+        .then((response) => {
+          this.setState({ user: response.data, isLoggedIn: true })
+        })
+        .catch(error => {
+          console.log(error)
+        });
+
+    }
+  }
+
+  logUser = (token) => {
+    localStorage.setItem("token", token);
+    UserApi.auth()
+      .then((response) => {
+        this.setState({ user: response.data, isLoggedIn: true })
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+  logout = () => {
+    localStorage.removeItem("token");
+    this.setState({ user: { name: "", widgtes: [] }, isLoggedIn: false })
+  }
+
+
+  render() {
+    return (
+      <Router>
+        <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} logout={this.logout} />
+        <Route exact path="/">
+          home
+      </Route>
+        <Route path="/login" >
+          <Login logUser={this.logUser} />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+      </Router>
+    );
+  }
 }
 
 export default App;
