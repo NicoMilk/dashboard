@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Login from './components/Login';
-import Register from './components/Register';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import Header from './components/Header';
 import Widgets from './components/Widgets';
 import Dashboard from './components/Dashboard';
@@ -51,6 +51,9 @@ class App extends Component {
     this.setState({ user: { name: "", widgtes: [] }, isLoggedIn: false })
   }
 
+  setWidgets = (userWidgets) => {
+    //reset widgets in user model
+  }
 
   render() {
     return (
@@ -62,7 +65,7 @@ class App extends Component {
             <div style={{ width: '30%', minWidth: '250px' }} >
               <Widgets />
             </div>
-            <Dashboard />
+            <Dashboard widgets={this.state.user.widgets} setWidgets={this.setWidgets} />
           </div>
         </Route>
         <Route path="/login" >

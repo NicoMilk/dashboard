@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserApi from '../apis/User.js'
+import UserApi from '../../apis/User.js'
 import { useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types';
 

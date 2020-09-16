@@ -1,7 +1,7 @@
 import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose'
-//import { Widget } from 'src/widget/widget.model';
+//import { Widget } from '../widgets/widget.model';
 import { User } from './user.model';
 
 @Injectable()
@@ -62,13 +62,13 @@ export class UsersService {
     };
   }
 
-  /* 
-      async getSuggestion(userId: string) {
-          const user = await this.userModel.find({ _id: userId }, { favorites: 1, _id: 0 });
-          const fav = user[0].favorites;
-          const sugg = await this.concertModel.find({ bands: { $in: fav } });
-          return sugg;
-      } */
+
+  /* async getWidgets(userId: string) {
+    const user = await this.userModel.find({ _id: userId }, { favorites: 1, _id: 0 });
+    const widIds = user[0].widgets.map((wid: any) => wid.id);
+    const sugg = await this.widgetModel.find({ _id: { $in: widIds } });
+    return sugg;
+  } */
 
   async updateUser(
     userId?: string,
