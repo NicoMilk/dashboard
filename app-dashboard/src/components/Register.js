@@ -86,7 +86,7 @@ class Register extends Component {
                   <div className="col-md-6">
                     <input
                       value={this.state.password} onChange={this.handleChange}
-                      name="passwod"
+                      name="password"
                       type="password"
                       className="form-control"
                       required
