@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 //import axios from 'axios';
 /* import OmdbSummary from './OmdbSummary';
 import OmdbActors from './OmdbActors';
-import News from './News'; */
+import News from './News';
+import MapContainer from './Map';*/
 
 class Dashboard extends Component {
 
