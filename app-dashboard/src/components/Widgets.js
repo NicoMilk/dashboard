@@ -31,7 +31,7 @@ export class Widgets extends Component {
                 id: 5,
                 name: "News - Headlines",
                 selected: false,
-            },
+            }
         ],
     }
 

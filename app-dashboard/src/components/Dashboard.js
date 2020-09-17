@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import OmdbSummary from './OmdbSummary';
 import OmdbActors from './OmdbActors';
 import News from './News';
+import MapContainer from './Map';
 
 class Dashboard extends Component {
 
@@ -14,6 +15,7 @@ class Dashboard extends Component {
                 <OmdbSummary />
                 <OmdbActors />
                 <News />
+                <MapContainer/>
             </div>
 
         )
