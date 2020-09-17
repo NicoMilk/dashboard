@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 //import axios from 'axios';
 /* import OmdbSummary from './OmdbSummary';
 import OmdbActors from './OmdbActors';
+<<<<<<< HEAD
 import News from './News'; */
 
 class Dashboard extends Component {
@@ -26,6 +27,26 @@ class Dashboard extends Component {
 
 
     }
+=======
+import News from './News';
+import ClockTime from './ClockTime';
+import ClockDate from './ClockDate';
+
+class Dashboard extends Component {
+
+  render() {
+    return (
+      <div className="d-flex flex-row flex-wrap justify-content-around align-self-start">
+        <OmdbSummary />
+        <OmdbActors />
+        <News />
+        <ClockTime />
+        <ClockDate />
+      </div>
+
+    )
+  }
+>>>>>>> clock
 }
 
 
