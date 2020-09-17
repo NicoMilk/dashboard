@@ -57,7 +57,7 @@ export class News extends Component {
                             <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                                 <Icon.Tools className="" />
                             </Accordion.Toggle>
-                            <a href=""><Icon.XSquareFill onClick={this.click} color="red" size={30} className="" /></a>
+                            <a href=""><Icon.XSquareFill onClick={this.props.deleteWidget.bind(this, this.props.id)} color="red" size={30} className="" /></a>
                         </div>
 
                     </div>

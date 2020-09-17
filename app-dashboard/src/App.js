@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import uuid from 'react-uuid'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import UserApi from './apis/User.js'
 import News from './components/News';
@@ -20,8 +21,8 @@ class App extends Component {
       user: {}
     },
     userWidgets: [
-      { name: News, value: "cnn" },
-      { name: OmdbSummary, value: "avatar" },
+      { id: 1, name: News, value: "cnn" },
+      { id: 2, name: OmdbSummary, value: "avatar" },
     ],
   }
 
@@ -57,7 +58,19 @@ class App extends Component {
   }
 
   addWidget = (widgetName) => {
-    this.setState({ userWidgets: this.state.userWidgets.concat({ name: widgetName }) })
+    const widget_id = uuid();
+    this.setState({ userWidgets: this.state.userWidgets.concat({ id: widget_id, name: widgetName }) })
+  }
+
+  deleteWidget = (widgetId) => {
+    this.setState(state => {
+      const list = state.userWidgets.filter(item => item.id !== widgetId);
+
+      return {
+        list,
+      };
+    });
+
   }
 
 
