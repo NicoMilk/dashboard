@@ -92,7 +92,8 @@ export class UsersService {
     if (widgets) {
       updatedUser.widgets = widgets;
     }
-    updatedUser.save();
+    updatedUser.save()
+    return updatedUser;
   }
 
 

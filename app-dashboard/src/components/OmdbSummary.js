@@ -16,7 +16,7 @@ class OmdbSummary extends Component {
       axios.get(`http://www.omdbapi.com/?apikey=89e82fd&t=${this.props.value}`)
         .then(res => {
           if (res.data.Response !== "False") {
-            console.log(res.data)
+            //console.log(res.data)
             this.setState({ movie: res.data });
           } else {
             this.setState({ movie: { Title: "Not Found", Plot: "pas de résultats pour cette recherche" } });

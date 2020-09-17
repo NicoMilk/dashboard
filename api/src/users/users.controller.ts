@@ -61,18 +61,16 @@ export class UsersController {
     @Body('name') name: string,
     @Body('email') email: string,
     @Body('password') password: string,
-    @Body('favorites') favorites: [],
-    // @Body('role') role: boolean
+    @Body('widgets') widgets: []
   ) {
-    await this.usersService.updateUser(
+    const patched = await this.usersService.updateUser(
       userId,
       name,
       email,
       password,
-      favorites,
-      //role
+      widgets
     );
-    return null;
+    return patched;
   }
 
   /* @Get('suggestions/:userId')

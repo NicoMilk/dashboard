@@ -12,18 +12,25 @@ class Dashboard extends Component {
 
     return <div className="d-flex flex-row flex-wrap justify-content-around align-self-start">
       {this.props.widgets.map((widget) => {
-        const NewTag = widget.name
+        //const NewTag = widget.componentName;
+        //widget.cmp.setId(widget.id);
+        //widget.cmp.deleteWidget = this.props.deleteWidget;
+
         return (
           <div key={widget.id}>
-            <NewTag value={widget.value} id={widget.id} deleteWidget={this.props.deleteWidget} />
-          </div>
+            {widget.cmp}
+          </div>)
 
-        )
+        /*  return (
+           <div key={widget.id}>
+             <NewTag value={widget.value} id={widget.id} deleteWidget={this.props.deleteWidget} />
+           </div>
+ 
+         ) */
+      })
       }
-      )}
 
     </div>
-
 
   }
 }

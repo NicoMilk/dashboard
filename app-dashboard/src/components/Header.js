@@ -15,10 +15,10 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar>
-        <NavLink to="/"><Navbar.Brand >TF4</Navbar.Brand></NavLink>
+      <Navbar bg="light">
+        <NavLink to="/" className="mr-5"><Navbar.Brand >TF4</Navbar.Brand></NavLink>
         <Navbar.Toggle />
-        <Widgets addWidget={this.props.addWidget} />
+        <Widgets addWidget={this.props.addWidget} widgets={this.props.widgets} className="ml-5" />
         <Navbar.Collapse className="justify-content-end">
 
           {this.props.isLoggedIn &&
@@ -39,6 +39,7 @@ class Header extends Component {
 Header.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
+  widgets: PropTypes.array.isRequired,
   addWidget: PropTypes.func.isRequired,
 }
 export default Header

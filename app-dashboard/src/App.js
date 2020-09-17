@@ -10,6 +10,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
+import WidgetApi from './apis/Widget.js'
 //import Timer from './components/Timer';
 
 
@@ -23,26 +24,38 @@ class App extends Component {
       user: {}
     },
     userWidgets: [
-      { id: 1, name: News, value: "cnn" },
-      { id: 2, name: OmdbSummary, value: "avatar" },
+
     ],
+    widgets: []
   }
 
 
-  componentDidMount() {
+  async componentDidMount() {
 
-    const token = localStorage.getItem("token");
+    const token = await localStorage.getItem("token");
     if (token) {
-      UserApi.auth()
-        .then((response) => {
-          this.setState({ user: response.data, isLoggedIn: true })
-        })
-        .catch(error => {
-          console.log(error)
-        });
+
+      const auth = await UserApi.auth();
+      const rawWidgets = await WidgetApi.getWidgets()
+
+      auth.data.widgets.map(async wid => await this.addComponent(wid));
+
+      this.setState({ user: auth.data, isLoggedIn: true, widgets: rawWidgets.data });
 
     }
   }
+
+  addComponent = async widget => {
+    const { componentName } = widget;
+    import(`./components/${componentName}.js`)
+      .then(Component => {
+        widget.cmp = (<Component.default key={widget.id} value={widget.value} id={widget.id} deleteWidget={this.deleteWidget} />);
+        this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
+      })
+      .catch(error => {
+        console.error(`"${componentName}" not yet supported`);
+      });
+  };
 
   logUser = (token) => {
     localStorage.setItem("token", token);
@@ -64,14 +77,29 @@ class App extends Component {
     //reset widgets in user model
   }
   addWidget = (widgetName) => {
-    const widget_id = uuid();
-    this.setState({ userWidgets: this.state.userWidgets.concat({ id: widget_id, name: widgetName }) })
+    console.log(widgetName);
+    const widget = {
+      id: uuid(),
+      name: widgetName,
+      componentName: widgetName,
+      value: "",
+    }
+    console.log(`Loading ${widget.componentName} component...`, widget);
+    import(`./components/${widget.componentName}.js`)
+      .then(Component => {
+        widget.cmp = (<Component.default key={widget.id} value={widget.value} id={widget.id} deleteWidget={this.deleteWidget} />);
+        this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
+      })
+      .catch(error => {
+        console.error(`"${widget.componentName}" not yet supported`);
+      });
   }
 
-  deleteWidget = (widgetId) => {
+  deleteWidget = (e) => {
+    console.log("deleting...")
+    e.preventDefault();
     this.setState(state => {
-      const list = state.userWidgets.filter(item => item.id !== widgetId);
-
+      const list = state.userWidgets.filter(item => item.id !== e.target.id);
       return {
         list,
       };
@@ -84,7 +112,7 @@ class App extends Component {
     return (
 
       <Router>
-        <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} logout={this.logout} addWidget={this.addWidget} />
+        <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} widgets={this.state.widgets} logout={this.logout} addWidget={this.addWidget} />
         <Route exact path="/">
           <Dashboard widgets={this.state.userWidgets} deleteWidget={this.deleteWidget} />
         </Route>

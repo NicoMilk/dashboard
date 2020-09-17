@@ -57,12 +57,9 @@ export class News extends Component {
               <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                 <Icon.Tools className="" />
               </Accordion.Toggle>
-              <a href=""><Icon.XSquareFill onClick={this.props.deleteWidget.bind(this, this.props.id)} color="red" size={30} className="" /></a>
+              <a href=""><Icon.XSquareFill onClick={this.props.deleteWidget} color="red" size={30} className="" /></a>
             </div>
-
           </div>
-
-
 
           <Accordion.Collapse eventKey="0">
 
@@ -88,8 +85,7 @@ export class News extends Component {
             this.state.news.map((article) => (
               <div >
                 <p className="text-center">
-                  {article.title} -
-                                    <a href={article.url} className=" btn-sm btn-info">Lire</a>
+                  {article.title} - <a href={article.url} className=" btn-sm btn-info">Lire</a>
                 </p>
               </div>
             ))
