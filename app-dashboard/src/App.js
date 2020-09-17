@@ -41,9 +41,10 @@ class App extends Component {
 
   addComponent = async widget => {
     const { componentName } = widget;
+    console.log("addwid", widget)
     import(`./components/${componentName}.js`)
       .then(Component => {
-        widget.cmp = (<Component.default key={widget.id} value={widget.value} id={widget.id} deleteWidget={this.deleteWidget} />);
+        widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
         this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
       })
       .catch(error => {
@@ -81,6 +82,28 @@ class App extends Component {
         });
     }
   }
+
+  updateWidget = (widgetId, params) => {
+
+    console.log(widgetId, params, this.state.userWidgets);
+    const userWidget = this.state.userWidgets.find(element => element.id === widgetId);
+    userWidget.params = params;
+    console.log(this.state.userWidgets);
+
+    const widgets = [];
+    this.state.userWidgets.map(wid => {
+      let temp = {
+        name: wid.name,
+        id: wid.id,
+        componentName: wid.componentName,
+        params: wid.params
+      }
+      widgets.push(temp);
+    })
+    UserApi.saveUser(this.state.user.id, { widgets: widgets })
+
+  }
+
   addWidget = widgetName => {
     console.log(widgetName);
     const widget = {
@@ -92,7 +115,7 @@ class App extends Component {
     console.log(`Loading ${widget.componentName} component...`, widget);
     import(`./components/${widget.componentName}.js`)
       .then(Component => {
-        widget.cmp = (<Component.default key={widget.id} value={widget.value} id={widget.id} deleteWidget={this.deleteWidget} />);
+        widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
         this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
       })
       .catch(error => {
@@ -111,7 +134,6 @@ class App extends Component {
       return list;
 
     };
-
     this.setState({ userWidgets: userWidgets(this.state) });
     console.log(this.state.userWidgets, userWidgets(this.state));
   }
