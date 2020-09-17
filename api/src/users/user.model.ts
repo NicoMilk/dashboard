@@ -5,7 +5,7 @@ export const UserSchema = new Mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  widgets: { type: [String] },
+  widgets: { type: [Object] },
 });
 
 export interface User extends Mongoose.Document {

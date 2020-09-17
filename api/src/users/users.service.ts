@@ -93,6 +93,7 @@ export class UsersService {
       updatedUser.widgets = widgets;
     }
     updatedUser.save();
+    return updatedUser
   }
 
 

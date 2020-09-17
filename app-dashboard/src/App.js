@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import uuid from 'react-uuid'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import UserApi from './apis/User.js'
-import News from './components/News';
-import OmdbSummary from './components/OmdbSummary';
+//import News from './components/News';
+//import OmdbSummary from './components/OmdbSummary';
 import Login from './components/Login';
 import Register from './components/Register';
 import Header from './components/Header';
@@ -19,30 +19,26 @@ class App extends Component {
   state = {
     isLoggedIn: false,
     user: {
-      name: "",
-      user: {}
     },
+    userId: "",
     userWidgets: [
-      /*       { id: 1, name: News, value: "cnn" },
-            { id: 2, name: OmdbSummary, value: "avatar" }, */
-      { id: 1, name: News, params: { value: "cnn" } },
-      { id: 2, name: OmdbSummary, params: { value: "avatar" } }
+      /*       { id: 1, name: News, params: { value: "cnn" } },
+            { id: 2, name: OmdbSummary, params: { value: "avatar" } } */
     ],
   }
 
 
   componentDidMount() {
-
     const token = localStorage.getItem("token");
     if (token) {
       UserApi.auth()
         .then((response) => {
-          this.setState({ user: response.data, isLoggedIn: true })
+          console.log(response.data);
+          this.setState({ user: response.data, isLoggedIn: true, userId: response.data.id, userWidgets: response.data.widgets })
         })
         .catch(error => {
           console.log(error)
         });
-
     }
   }
 
@@ -59,16 +55,27 @@ class App extends Component {
 
   logout = () => {
     localStorage.removeItem("token");
-    this.setState({ user: { name: "", widgtes: [] }, isLoggedIn: false })
+    this.setState({ user: { name: "", widgets: [] }, isLoggedIn: false })
   }
 
-  setWidgets = (userWidgets) => {
-    //reset widgets in user model
+  //recupère les widget de la db
+  getWidgets = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      UserApi.auth()
+        .then((response) => {
+
+          this.setState({ userWidgets: response.data.widgets, isLoggedIn: true, userId: response.data.id })
+        })
+        .catch(error => {
+          console.log(error)
+        });
+    }
   }
 
   addWidget = (widgetName) => {
     const widget_id = uuid();
-    this.setState({ userWidgets: this.state.userWidgets.concat({ id: widget_id, name: widgetName }) })
+    this.setState({ userWidgets: this.state.userWidgets.concat({ id: widget_id, name: widgetName, test: "gdvsh", params: "" }) })
   }
 
   updateWidget = (widgetId, confValue) => {
@@ -83,7 +90,8 @@ class App extends Component {
 
       return (
         { userWidgets: list, },
-        console.log(this.state.userWidgets)
+        console.log("userWidgets =", this.state.userWidgets)
+        //this.saveWidgets()
       );
 
     });
@@ -92,11 +100,23 @@ class App extends Component {
   deleteWidget = (widgetId) => {
     this.setState(state => {
       const list = state.userWidgets.filter(item => item.id !== widgetId);
-      return {
-        userWidgets: list,
-      };
-    });
+      return (
+        { userWidgets: list }
+      )
 
+        //this.saveWidgets()
+        ;
+    });
+  }
+  // stock lesmodif de widget sur la db
+  saveWidgets = () => {
+    UserApi.saveUser(this.state.user.id, { widgets: this.state.userWidgets })
+      .then((response) => {
+        console.log("patch", response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      });
   }
 
 

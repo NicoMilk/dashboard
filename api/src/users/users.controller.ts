@@ -36,17 +36,15 @@ export class UsersController {
   }
 
 
-
-  @hasRoles('admin')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('admin')    //  pour admin
   async getAllUsers() {
     const users = await this.usersService.getUsers();
     return users;
   }
 
-  @hasRoles('admin')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+
+  @UseGuards(JwtAuthGuard)
   @Get('admin/:id')   //  pour admin
   getUser(@Param('id') userId: string) {
     return this.usersService.getSingleUser(userId);
@@ -61,18 +59,17 @@ export class UsersController {
     @Body('name') name: string,
     @Body('email') email: string,
     @Body('password') password: string,
-    @Body('favorites') favorites: [],
+    @Body('widgets') widgets: [],
     // @Body('role') role: boolean
   ) {
-    await this.usersService.updateUser(
+    const update = await this.usersService.updateUser(
       userId,
       name,
       email,
       password,
-      favorites,
-      //role
+      widgets,
     );
-    return null;
+    return update;
   }
 
   /* @Get('suggestions/:userId')
