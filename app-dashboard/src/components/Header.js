@@ -15,20 +15,20 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar>
+      <Navbar bg="dark" variant="dark">
         <NavLink to="/"><Navbar.Brand >TF4</Navbar.Brand></NavLink>
         <Navbar.Toggle />
-        <Widgets addWidget={this.props.addWidget} />
+        { this.props.isLoggedIn && <Widgets addWidget={this.props.addWidget} />}
         <Navbar.Collapse className="justify-content-end">
 
           {this.props.isLoggedIn &&
-            <Link to="/profile" className="ml-3" onClick={this.profile} >{this.props.user.name}</Link>
+            <h5 className="ml-3 text-white-50">{this.props.user.name}</h5>
           }
           {!this.props.isLoggedIn && <NavLink className="ml-3" to="/login">Login</NavLink>
           }
           {!this.props.isLoggedIn && <NavLink className="ml-3" to="/register">Register</NavLink>
           }
-          {this.props.isLoggedIn && <Link to="/login" className="ml-3" onClick={this.props.logout} >Logout</Link>
+          {this.props.isLoggedIn && <Link to="/login" className="ml-3 btn btn-danger btn-sm" onClick={this.props.logout} >Logout</Link>
           }
         </Navbar.Collapse>
       </Navbar>

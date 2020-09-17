@@ -4,6 +4,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import OmdbSummary from './OmdbSummary';
 import OmdbActors from './OmdbActors';
+import OmdbPoster from './OmdbPoster';
 import News from './News';
 import ClockDate from './ClockDate';
 import ClockTime from './ClockTime';
@@ -23,6 +24,12 @@ export class Widgets extends Component {
                 id: 2,
                 compName: OmdbSummary,
                 name: "Omdb - Summary",
+                selected: false,
+            },
+            {
+                id: 8,
+                compName: OmdbPoster,
+                name: "Omdb - Poster",
                 selected: false,
             },
             {
@@ -55,6 +62,7 @@ export class Widgets extends Component {
                 name: "ShowCacao - Tickets",
                 selected: false,
             },
+
         ],
     }
 

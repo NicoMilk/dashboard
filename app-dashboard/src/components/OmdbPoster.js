@@ -7,7 +7,7 @@ import Accordion from 'react-bootstrap/Accordion'
 //import Button from 'react-bootstrap/Button';
 import * as Icon from 'react-bootstrap-icons';
 
-class OmdbSummary extends Component {
+class OmdbPoster extends Component {
   state = {
     value: '',
     movie: {},
@@ -19,7 +19,7 @@ class OmdbSummary extends Component {
           if (res.data.Response !== "False") {
             this.setState({ movie: res.data });
           } else {
-            this.setState({ movie: { Title: "Not Found", Plot: "pas de résultats pour cette recherche" } });
+            this.setState({ movie: { Title: "Not Found", Poster: "Pas d'affiche disponible" } });
           }
 
         })
@@ -37,7 +37,7 @@ class OmdbSummary extends Component {
           console.log(res.data)
           this.setState({ movie: res.data });
         } else {
-          this.setState({ movie: { Title: "Not Found", Plot: "pas de résultats pour cette recherche" } });
+          this.setState({ movie: { Title: "Not Found", Plot: "Pas d'affiche disponible" } });
         }
         this.props.updateWidget(this.props.id, { value: this.state.value })
       })
@@ -49,11 +49,17 @@ class OmdbSummary extends Component {
 
 
   render() {
+    let image;
+    if (this.state.movie.Poster) {
+      image = <img src={this.state.movie.Poster} alt="poster film" />
+    } else {
+      image = <span></span>
+    }
     return (
       <Card style={{ width: '25rem' }} className="shadow my-4">
         <Accordion >
           <div className="bg-warning d-flex justify-content-between p-2">
-            <h5 className="text-center ml-3 p-2 font-weight-bold bg-warning ">Résumé de Film</h5>
+            <h5 className="text-center ml-3 p-2 font-weight-bold bg-warning ">Affiche de Film</h5>
             <div className="text-center ml-3 p-2">
               <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                 <Icon.Tools className="" />
@@ -73,7 +79,7 @@ class OmdbSummary extends Component {
             </Accordion.Collapse>
             < div className="mt-3">
               <h5>{this.state.movie.Title}</h5>
-              <p>{this.state.movie.Plot}</p>
+              {image}
             </div >
           </div>
         </Accordion>
@@ -82,10 +88,16 @@ class OmdbSummary extends Component {
   }
 }
 
-OmdbSummary.propTypes = {
+OmdbPoster.propTypes = {
   value: PropTypes.object,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
 }
 
-export default OmdbSummary;
+export default OmdbPoster;
+
+/* if (this.state.movie) {
+  const img = <img src={this.state.movie.Poster} alt="poster film" />
+} else {
+  const img = <span></span>
+} */

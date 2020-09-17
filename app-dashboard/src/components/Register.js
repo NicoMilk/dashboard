@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 /*   */
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserApi from '../apis/User.js'
-import { useHistory } from 'react-router-dom'
+//import { useHistory } from 'react-router-dom'
+import { Redirect } from "react-router-dom"
 
 class Register extends Component {
 
@@ -11,7 +12,8 @@ class Register extends Component {
     name: "",
     email: "",
     password: "",
-    password2: ""
+    password2: "",
+    redirection: false,
   }
 
   register = (e) => {
@@ -26,7 +28,8 @@ class Register extends Component {
         UserApi.register(this.state)
           .then((response) => {
             console.log(response.data)
-            useHistory.push('/login')
+            //useHistory.push('/login')
+            this.setState({ redirection: true });
           })
           .catch(error => {
             this.errors = 2;
@@ -47,7 +50,11 @@ class Register extends Component {
   }
 
   render() {
-
+    const { redirection } = this.state;
+    if (redirection) {
+      //Affichage de la redirection
+      return <Redirect to='/login' />;
+    }
     return (
       <div className="login">
         <div className="row justify-content-center">

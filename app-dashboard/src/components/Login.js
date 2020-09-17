@@ -8,12 +8,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import UserApi from '../apis/User.js'
 //import { useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import { Redirect } from "react-router-dom"
 
 
 class Login extends Component {
   state = {
     username: "",
     password: "",
+    redirection: false,
   }
 
 
@@ -25,7 +27,8 @@ class Login extends Component {
       UserApi.login(this.state)
         .then((response) => {
           this.props.logUser(response.data.access_token)
-          this.props.history.push('/');
+          //this.props.history.push('/');
+          this.setState({ redirection: true });
         })
         .catch(error => {
           this.errors = 2;
@@ -46,6 +49,11 @@ class Login extends Component {
 
 
   render() {
+    const { redirection } = this.state;
+    if (redirection) {
+      //Affichage de la redirection
+      return <Redirect to='/' />;
+    }
     return (
       <div className="login">
         <Row className="justify-content-center">

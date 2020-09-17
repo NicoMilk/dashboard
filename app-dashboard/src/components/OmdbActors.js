@@ -70,7 +70,7 @@ class OmdbActors extends Component {
                                 <button onClick={this.handleSubmit} className="btn-dark">OK</button>
                             </div>
                         </Accordion.Collapse>
-                        < div >
+                        < div className="mt-3">
                             <h5>{this.state.movie.Title}</h5>
                             <p>{this.state.movie.Actors}</p>
                         </div >
