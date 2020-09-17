@@ -59,8 +59,7 @@ export class UsersController {
     @Body('name') name: string,
     @Body('email') email: string,
     @Body('password') password: string,
-    @Body('widgets') widgets: [],
-    // @Body('role') role: boolean
+    @Body('widgets') widgets: []
   ) {
     const update = await this.usersService.updateUser(
       userId,

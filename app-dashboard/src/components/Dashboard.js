@@ -9,31 +9,38 @@ import MapContainer from './Map';*/
 
 class Dashboard extends Component {
 
-    render() {
+  render() {
 
-        return <div className="d-flex flex-row flex-wrap justify-content-around align-self-start">
-            {this.props.widgets.map((widget) => {
-                const NewTag = widget.name
-                return (
-                    <div key={widget.id}>
-                        <NewTag key={widget.id} params={widget.params} id={widget.id} updateWidget={this.props.updateWidget} deleteWidget={this.props.deleteWidget} />
-                    </div>
+    return <div className="d-flex flex-row flex-wrap justify-content-around align-self-start">
+      {this.props.widgets.map((widget) => {
+        //const NewTag = widget.componentName;
+        //widget.cmp.setId(widget.id);
+        //widget.cmp.deleteWidget = this.props.deleteWidget;
+        console.log(widget);
+        return (
+          <div key={widget.id}>
+            {widget.cmp}
+          </div>)
 
-                )
-            }
-            )}
+        /*  return (
+           <div key={widget.id}>
+             <NewTag value={widget.value} id={widget.id} deleteWidget={this.props.deleteWidget} />
+           </div>
+ 
+         ) */
+      })
+      }
 
-        </div>
+    </div>
 
-
-    }
+  }
 }
 
 
 
 Dashboard.propTypes = {
-    widgets: PropTypes.array.isRequired,
-    deleteWidget: PropTypes.func.isRequired
+  widgets: PropTypes.array.isRequired,
+  deleteWidget: PropTypes.func.isRequired
 }
 
 export default Dashboard;
