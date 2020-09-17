@@ -8,6 +8,8 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import OmdbSummary from './OmdbSummary';
 import OmdbActors from './OmdbActors';
 import News from './News';
+import ShowCacaoConcerts from './ShowCacaoConcerts';
+import ShowCacaoTickets from './ShowCacaoTickets';
 
 export class Widgets extends Component {
   state = {
@@ -28,6 +30,18 @@ export class Widgets extends Component {
         id: 5,
         compName: News,
         name: "News - Headlines",
+        selected: false,
+      },
+      {
+        id: 92,
+        compName: ShowCacaoConcerts,
+        name: "Show Cacao - Concerts",
+        selected: false,
+      },
+      {
+        id: 93,
+        compName: ShowCacaoTickets,
+        name: "Show Cacao - Tickets",
         selected: false,
       },
     ],
