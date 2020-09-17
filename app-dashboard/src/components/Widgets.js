@@ -7,6 +7,8 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import OmdbSummary from './OmdbSummary';
 import OmdbActors from './OmdbActors';
+import ClockDate from './ClockDate';
+import ClockTime from './ClockTime';
 import News from './News';
 
 export class Widgets extends Component {
@@ -28,6 +30,18 @@ export class Widgets extends Component {
         id: 5,
         compName: News,
         name: "News - Headlines",
+        selected: false,
+      },
+      {
+        id: 90,
+        compName: ClockDate,
+        name: "Clock - Date",
+        selected: false,
+      },
+      {
+        id: 91,
+        compName: ClockTime,
+        name: "Clock - Time",
         selected: false,
       },
     ],
