@@ -23,8 +23,10 @@ class App extends Component {
       user: {}
     },
     userWidgets: [
-      { id: 1, name: News, value: "cnn" },
-      { id: 2, name: OmdbSummary, value: "avatar" },
+      /*       { id: 1, name: News, value: "cnn" },
+            { id: 2, name: OmdbSummary, value: "avatar" }, */
+      { id: 1, name: News, params: { value: "cnn" } },
+      { id: 2, name: OmdbSummary, params: { value: "avatar" } }
     ],
   }
 
@@ -63,17 +65,35 @@ class App extends Component {
   setWidgets = (userWidgets) => {
     //reset widgets in user model
   }
+
   addWidget = (widgetName) => {
     const widget_id = uuid();
     this.setState({ userWidgets: this.state.userWidgets.concat({ id: widget_id, name: widgetName }) })
   }
 
+  updateWidget = (widgetId, confValue) => {
+    this.setState(state => {
+      const list = state.userWidgets.map((item) => {
+        if (item.id === widgetId) {
+          return item.params = confValue
+        } else {
+          return item;
+        }
+      });
+
+      return (
+        { userWidgets: list, },
+        console.log(this.state.userWidgets)
+      );
+
+    });
+  }
+
   deleteWidget = (widgetId) => {
     this.setState(state => {
       const list = state.userWidgets.filter(item => item.id !== widgetId);
-
       return {
-        list,
+        userWidgets: list,
       };
     });
 
@@ -86,7 +106,7 @@ class App extends Component {
       <Router>
         <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} logout={this.logout} addWidget={this.addWidget} />
         <Route exact path="/">
-          <Dashboard widgets={this.state.userWidgets} deleteWidget={this.deleteWidget} />
+          <Dashboard widgets={this.state.userWidgets} updateWidget={this.updateWidget} deleteWidget={this.deleteWidget} />
         </Route>
         <Route path="/login" history={this.props.history} >
           <Login logUser={this.logUser} />

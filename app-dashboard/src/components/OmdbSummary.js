@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion'
 //import Button from 'react-bootstrap/Button';
@@ -12,8 +13,8 @@ class OmdbSummary extends Component {
     movie: {},
   }
   componentDidMount() {
-    if (this.props.value) {
-      axios.get(`http://www.omdbapi.com/?apikey=89e82fd&t=${this.props.value}`)
+    if (this.props.params) {
+      axios.get(`http://www.omdbapi.com/?apikey=89e82fd&t=${this.props.params.value}`)
         .then(res => {
           if (res.data.Response !== "False") {
             console.log(res.data)
@@ -39,7 +40,7 @@ class OmdbSummary extends Component {
         } else {
           this.setState({ movie: { Title: "Not Found", Plot: "pas de résultats pour cette recherche" } });
         }
-
+        this.props.updateWidget(this.props.id, { value: this.state.value })
       })
   }
 
@@ -58,7 +59,7 @@ class OmdbSummary extends Component {
               <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                 <Icon.Tools className="" />
               </Accordion.Toggle>
-              <a href=""><Icon.XSquareFill onClick={this.click} color="red" size={30} className="" /></a>
+              <Link><Icon.XSquareFill onClick={this.props.deleteWidget.bind(this, this.props.id)} color="red" size={30} className="" /></Link>
             </div>
 
           </div>
@@ -83,7 +84,7 @@ class OmdbSummary extends Component {
 }
 
 OmdbSummary.propTypes = {
-  value: PropTypes.array,
+  value: PropTypes.object,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
 }
