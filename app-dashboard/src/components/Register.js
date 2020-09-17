@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 /*   */
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserApi from '../../apis/User.js'
+import UserApi from '../apis/User.js'
 import { useHistory } from 'react-router-dom'
 
 class Register extends Component {

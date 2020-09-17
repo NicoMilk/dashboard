@@ -5,8 +5,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserApi from '../../apis/User.js'
-import { useHistory } from 'react-router-dom'
+import UserApi from '../apis/User.js'
+//import { useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types';
 
 
@@ -16,17 +16,16 @@ class Login extends Component {
     password: "",
   }
 
+
   login = (e) => {
-    console.log(this.state)
     if (
       this.state.username &&
       this.state.password
     ) {
-
       UserApi.login(this.state)
         .then((response) => {
           this.props.logUser(response.data.access_token)
-          useHistory.push('/');
+          this.props.history.push('/');
         })
         .catch(error => {
           this.errors = 2;

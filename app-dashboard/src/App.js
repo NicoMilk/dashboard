@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
+import Login from './components/Login';
+import Register from './components/Register';
 import Header from './components/Header';
 import Widgets from './components/Widgets';
 import Dashboard from './components/Dashboard';
+import Timer from './components/Timer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import UserApi from './apis/User.js'
@@ -19,6 +20,7 @@ class App extends Component {
       user: {}
     }
   }
+
 
   componentDidMount() {
 
@@ -58,17 +60,18 @@ class App extends Component {
   render() {
     return (
 
-      <Router>
+      <Router >
         <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} logout={this.logout} />
-        <Route exact path="/">
+        <Route exact path="/" >
           <div className="container md-col-10 d-flex justify-content-start">
             <div style={{ width: '30%', minWidth: '250px' }} >
               <Widgets />
             </div>
             <Dashboard widgets={this.state.user.widgets} setWidgets={this.setWidgets} />
+
           </div>
         </Route>
-        <Route path="/login" >
+        <Route path="/login" history={this.props.history} >
           <Login logUser={this.logUser} />
         </Route>
         <Route path="/register">
