@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import uuid from 'react-uuid'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import UserApi from './apis/User.js'
+import News from './components/News';
+import OmdbSummary from './components/OmdbSummary';
 import Login from './components/Login';
 import Register from './components/Register';
 import Header from './components/Header';
-import Widgets from './components/Widgets';
 import Dashboard from './components/Dashboard';
-import Timer from './components/Timer';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import UserApi from './apis/User.js'
+//import Timer from './components/Timer';
+
 
 
 class App extends Component {
@@ -18,7 +21,11 @@ class App extends Component {
     user: {
       name: "",
       user: {}
-    }
+    },
+    userWidgets: [
+      { id: 1, name: News, value: "cnn" },
+      { id: 2, name: OmdbSummary, value: "avatar" },
+    ],
   }
 
 
@@ -56,20 +63,30 @@ class App extends Component {
   setWidgets = (userWidgets) => {
     //reset widgets in user model
   }
+  addWidget = (widgetName) => {
+    const widget_id = uuid();
+    this.setState({ userWidgets: this.state.userWidgets.concat({ id: widget_id, name: widgetName }) })
+  }
+
+  deleteWidget = (widgetId) => {
+    this.setState(state => {
+      const list = state.userWidgets.filter(item => item.id !== widgetId);
+
+      return {
+        list,
+      };
+    });
+
+  }
+
 
   render() {
     return (
 
-      <Router >
-        <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} logout={this.logout} />
-        <Route exact path="/" >
-          <div className="container md-col-10 d-flex justify-content-start">
-            <div style={{ width: '30%', minWidth: '250px' }} >
-              <Widgets />
-            </div>
-            <Dashboard widgets={this.state.user.widgets} setWidgets={this.setWidgets} />
-
-          </div>
+      <Router>
+        <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} logout={this.logout} addWidget={this.addWidget} />
+        <Route exact path="/">
+          <Dashboard widgets={this.state.userWidgets} deleteWidget={this.deleteWidget} />
         </Route>
         <Route path="/login" history={this.props.history} >
           <Login logUser={this.logUser} />
@@ -83,3 +100,10 @@ class App extends Component {
 }
 
 export default App;
+
+/* <div className="container md-col-10 d-flex justify-content-start">
+  <div style={{ width: '30%', minWidth: '250px' }} >
+    <Widgets />
+  </div>
+  <Dashboard />
+</div> */

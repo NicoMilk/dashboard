@@ -1,15 +1,29 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
+import * as Icon from 'react-bootstrap-icons';
 
 
 export class News extends Component {
     state = {
         value: '',
         news: [],
+    }
+    componentDidMount() {
+        if (this.props.value) {
+            axios.get(`https://newsapi.org/v2/top-headlines?sources=${this.props.value}&apiKey=aaa2efb8ddb043ecadd6950489da316f`)
+                .then(res => {
+                    this.setState({ news: res.data.articles })
+                })
+        }
+    }
+
+    reload() {
+        this.componentDidMount();
     }
 
     handleChange = (e) => {
@@ -25,6 +39,10 @@ export class News extends Component {
             })
     }
 
+    click() {
+        console.log("click")
+    }
+
 
     render() {
         return (
@@ -33,11 +51,17 @@ export class News extends Component {
             }
             } className="shadow my-4" >
                 <Accordion >
-                    <h5 className="text-center p-2 font-weight-bold bg-warning">A la une
-                    <Accordion.Toggle as={Button} variant="link" eventKey="0" className="">
-                            Options
-                    </Accordion.Toggle>
-                    </h5>
+                    <div className="bg-warning d-flex justify-content-between p-2">
+                        <h5 className="text-center ml-3 p-2 font-weight-bold bg-warning ">A la une</h5>
+                        <div className="text-center ml-3 p-2">
+                            <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
+                                <Icon.Tools className="" />
+                            </Accordion.Toggle>
+                            <a href=""><Icon.XSquareFill onClick={this.props.deleteWidget.bind(this, this.props.id)} color="red" size={30} className="" /></a>
+                        </div>
+
+                    </div>
+
 
 
                     <Accordion.Collapse eventKey="0">
@@ -59,7 +83,7 @@ export class News extends Component {
 
                     </Accordion.Collapse>
                 </Accordion>
-                <div className="overflow-auto px-3">
+                <div className="overflow-auto px-3 my-3">
                     {
                         this.state.news.map((article) => (
                             <div >
@@ -80,4 +104,33 @@ export class News extends Component {
     }
 }
 
+News.propTypes = {
+    value: PropTypes.array,
+    id: PropTypes.string,
+    deleteWidget: PropTypes.func.isRequired,
+}
+
 export default News
+
+
+/* User = {
+    ...
+    widgets :[
+        {
+            id : UUId,
+            type: "ComponentName", // nom de la balise
+            params : {
+                value: "critereData", // props à ajouter sur la balise
+                style: "critereStyle" // props à ajouter sur la balise
+            }
+        },
+        {
+            id: UUId,
+            type: "ComponentName", //nom de la balise
+            params: {
+                value: "critereData", // props à ajouter sur la balise
+                style: "critereStyle" // props à ajouter sur la balise
+            }
+        },
+    ]
+} */

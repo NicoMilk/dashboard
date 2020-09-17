@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import { NavLink, Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import Widgets from './Widgets';
 
 
 
@@ -17,6 +18,7 @@ class Header extends Component {
       <Navbar>
         <NavLink to="/"><Navbar.Brand >TF4</Navbar.Brand></NavLink>
         <Navbar.Toggle />
+        <Widgets addWidget={this.props.addWidget} />
         <Navbar.Collapse className="justify-content-end">
 
           {this.props.isLoggedIn &&
@@ -36,6 +38,7 @@ class Header extends Component {
 
 Header.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  addWidget: PropTypes.func.isRequired,
 }
 export default Header
