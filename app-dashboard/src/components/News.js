@@ -43,6 +43,11 @@ export class News extends Component {
     console.log("click")
   }
 
+  deleteWidget = e => {
+    e.preventDefault();
+    this.props.deleteWidget(this.props.id);
+  }
+
 
   render() {
     return (
@@ -57,7 +62,7 @@ export class News extends Component {
               <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                 <Icon.Tools className="" />
               </Accordion.Toggle>
-              <a href=""><Icon.XSquareFill onClick={this.props.deleteWidget} color="red" size={30} className="" /></a>
+              <a href=""><Icon.XSquareFill onClick={this.deleteWidget} color="red" size={30} className="" /></a>
             </div>
           </div>
 
@@ -83,7 +88,7 @@ export class News extends Component {
         <div className="overflow-auto px-3 my-3">
           {
             this.state.news.map((article) => (
-              <div >
+              <div key={article.publishedAt} >
                 <p className="text-center">
                   {article.title} - <a href={article.url} className=" btn-sm btn-info">Lire</a>
                 </p>
@@ -101,7 +106,7 @@ export class News extends Component {
 }
 
 News.propTypes = {
-  value: PropTypes.array,
+  value: PropTypes.string,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
 }

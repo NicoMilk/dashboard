@@ -47,6 +47,11 @@ class OmdbSummary extends Component {
     this.setState({ value: e.target.value })
   }
 
+  deleteWidget = e => {
+    e.preventDefault();
+    this.props.deleteWidget(this.props.id);
+  }
+
 
   render() {
     return (
@@ -58,7 +63,7 @@ class OmdbSummary extends Component {
               <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                 <Icon.Tools className="" />
               </Accordion.Toggle>
-              <a href=""><Icon.XSquareFill onClick={this.click} color="red" size={30} className="" /></a>
+              <a href=""><Icon.XSquareFill onClick={this.deleteWidget} color="red" size={30} className="" /></a>
             </div>
 
           </div>
@@ -83,7 +88,7 @@ class OmdbSummary extends Component {
 }
 
 OmdbSummary.propTypes = {
-  value: PropTypes.array,
+  value: PropTypes.string,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
 }

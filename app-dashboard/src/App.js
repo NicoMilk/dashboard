@@ -21,7 +21,7 @@ class App extends Component {
     isLoggedIn: false,
     user: {
       name: "",
-      user: {}
+      // user: {}
     },
     userWidgets: [
 
@@ -34,14 +34,10 @@ class App extends Component {
 
     const token = await localStorage.getItem("token");
     if (token) {
-
       const auth = await UserApi.auth();
-      const rawWidgets = await WidgetApi.getWidgets()
-
+      const rawWidgets = await WidgetApi.getWidgets();
       auth.data.widgets.map(async wid => await this.addComponent(wid));
-
       this.setState({ user: auth.data, isLoggedIn: true, widgets: rawWidgets.data });
-
     }
   }
 
@@ -57,10 +53,10 @@ class App extends Component {
       });
   };
 
-  logUser = (token) => {
+  logUser = token => {
     localStorage.setItem("token", token);
     UserApi.auth()
-      .then((response) => {
+      .then(response => {
         this.setState({ user: response.data, isLoggedIn: true })
       })
       .catch(error => {
@@ -76,7 +72,7 @@ class App extends Component {
   setWidgets = (userWidgets) => {
     //reset widgets in user model
   }
-  addWidget = (widgetName) => {
+  addWidget = widgetName => {
     console.log(widgetName);
     const widget = {
       id: uuid(),
@@ -95,16 +91,20 @@ class App extends Component {
       });
   }
 
-  deleteWidget = (e) => {
-    console.log("deleting...")
-    e.preventDefault();
-    this.setState(state => {
-      const list = state.userWidgets.filter(item => item.id !== e.target.id);
-      return {
-        list,
-      };
-    });
+  deleteWidget = widgetId => {
 
+    console.log(this.state.userWidgets);
+    console.log("deleting...", widgetId);
+
+    const userWidgets = (state) => {
+      const list = state.userWidgets.filter(item => item.id !== widgetId);
+      console.log(list);
+      return list;
+
+    };
+    
+    this.setState({ userWidgets :  userWidgets(this.state) });
+    console.log(this.state.userWidgets, userWidgets(this.state));
   }
 
 

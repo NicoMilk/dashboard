@@ -15,7 +15,7 @@ class Dashboard extends Component {
         //const NewTag = widget.componentName;
         //widget.cmp.setId(widget.id);
         //widget.cmp.deleteWidget = this.props.deleteWidget;
-
+        console.log(widget);
         return (
           <div key={widget.id}>
             {widget.cmp}
