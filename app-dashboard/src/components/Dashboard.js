@@ -14,7 +14,6 @@ class Dashboard extends Component {
     return (<div className="d-flex flex-row flex-wrap justify-content-around align-self-start">
       {this.props.widgets.map((widget) => {
 
-        console.log(widget);
         return (
           <div key={widget.id}>
             {widget.cmp}
@@ -30,7 +29,8 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   widgets: PropTypes.array.isRequired,
-  deleteWidget: PropTypes.func.isRequired
+  deleteWidget: PropTypes.func.isRequired,
+  updateWidget: PropTypes.func.isRequired,
 }
 
 export default Dashboard;

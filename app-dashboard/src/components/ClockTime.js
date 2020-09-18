@@ -29,6 +29,7 @@ export class ClockTime extends Component {
     }, 1000);
   }
 
+
   handleChange = (e) => {
     this.setState({ showSeconds: e.target.checked });
     this.props.updateWidget(this.props.id, {

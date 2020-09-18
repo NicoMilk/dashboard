@@ -64,7 +64,7 @@ class OmdbPoster extends Component {
               <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                 <Icon.Tools className="" />
               </Accordion.Toggle>
-              <a href="#"><Icon.XSquareFill onClick={this.props.deleteWidget.bind(this, this.props.id)} color="red" size={30} className="" /></a>
+              <Icon.XSquareFill onClick={this.props.deleteWidget.bind(this, this.props.id)} color="red" size={30} className="" style={{ cursor: "pointer" }} />
             </div>
 
           </div>
@@ -89,9 +89,10 @@ class OmdbPoster extends Component {
 }
 
 OmdbPoster.propTypes = {
-  value: PropTypes.object,
+  params: PropTypes.object,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
+  updateWidget: PropTypes.func.isRequired,
 }
 
 export default OmdbPoster;
