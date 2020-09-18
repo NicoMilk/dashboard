@@ -14,17 +14,23 @@ export class ClockDate extends Component {
   timer = null;
 
   componentDidMount() {
-    this.setState({
-      date: new Date(),
-      color: this.props.params.color,
-      bgColor: this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
-    });
+    if (this.props.params) {
+      this.setState({
+        date: new Date(),
+        color: this.props.params.color,
+        bgColor: this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
+      });
+    } else {
+      this.setState({
+        date: new Date()
+      });
+    }
 
     this.timer = window.setInterval(() => {
       this.setState({
         date: new Date(),
       });
-    }, 1000);
+    }, this.props.timer);
   }
 
   handleChange = (e) => {
@@ -33,7 +39,7 @@ export class ClockDate extends Component {
     this.props.updateWidget(this.props.id, { color: e.target.value });
   };
 
-  onChange = (e) => {};
+  onChange = (e) => { };
 
   reload() {
     this.componentDidMount();

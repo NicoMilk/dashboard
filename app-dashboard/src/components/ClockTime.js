@@ -15,18 +15,24 @@ export class ClockTime extends Component {
   timer = null;
 
   componentDidMount() {
-    this.setState({
-      date: new Date(),
-      color: this.props.params.color,
-      showSeconds: this.props.params.showSeconds,
-      bgColor: this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
-    });
-
+    if (this.props.params) {
+      this.setState({
+        date: new Date(),
+        color: this.props.params.color,
+        showSeconds: this.props.params.showSeconds,
+        bgColor: this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
+      });
+    } else {
+      this.setState({
+        date: new Date()
+      });
+    }
+    console.log(this.props.timer)
     this.timer = window.setInterval(() => {
       this.setState({
         date: new Date(),
       });
-    }, 1000);
+    }, this.props.timer);
   }
 
 

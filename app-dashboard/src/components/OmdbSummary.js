@@ -97,7 +97,7 @@ OmdbSummary.propTypes = {
   params: PropTypes.object,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
-  updateWidget: PropTypes.func.isRequired,
+  updateWidget: PropTypes.func.isRequired
 }
 
 export default OmdbSummary;

@@ -21,8 +21,10 @@ class App extends Component {
     },
     userId: "",
     userWidgets: [],
-    widgets: [],
-  };
+    widgets: []
+  }
+
+  widgetCount = 0;
 
   async componentDidMount() {
     const token = await localStorage.getItem("token");
@@ -44,6 +46,7 @@ class App extends Component {
 
     import(`./components/${componentName}.js`)
       .then(Component => {
+        widget.order = this.widgetCount++;
         widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} timer={widgetCmp.timer} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
         this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
       })
@@ -58,8 +61,8 @@ class App extends Component {
       .then((response) => {
         this.setState({ user: response.data, isLoggedIn: true });
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(error => {
+        console.error(error)
       });
   };
 
@@ -88,7 +91,7 @@ class App extends Component {
     userWidget.params = params;
 
     const widgets = [];
-    this.state.userWidgets.map((wid) => {
+    this.state.userWidgets.forEach(wid => {
       let temp = {
         name: wid.name,
         id: wid.id,
@@ -112,6 +115,7 @@ class App extends Component {
     }
     import(`./components/${widget.componentName}.js`)
       .then(Component => {
+        widget.order = this.widgetCount++;
         widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} timer={widgetCmp.timer} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
         this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
       })
@@ -128,11 +132,10 @@ class App extends Component {
       const list = state.userWidgets.filter(item => item.id !== widgetId);
       return list;
     };
-
     const newUserWidget = userWidgets(this.state);
     this.setState({ userWidgets: newUserWidget });
     const widgets = [];
-    newUserWidget.map(wid => {
+    newUserWidget.forEach(wid => {
       let temp = {
         name: wid.name,
         id: wid.id,
@@ -142,6 +145,16 @@ class App extends Component {
       widgets.push(temp);
     })
     UserApi.saveUser(this.state.user.id, { widgets: widgets })
+  }
+
+
+  onReorder = (e, newidx, previdx) => {
+    const sortedUserWidgets = this.state.userWidgets;
+    let tmp = sortedUserWidgets[newidx];
+    sortedUserWidgets[newidx] = sortedUserWidgets[previdx];
+    sortedUserWidgets[previdx] = tmp;
+    this.setState({ userWigets: sortedUserWidgets })
+    UserApi.saveUser(this.state.user.id, { widgets: sortedUserWidgets })
   }
 
 
@@ -156,11 +169,7 @@ class App extends Component {
           addWidget={this.addWidget}
         />
         <Route exact path="/">
-          <Dashboard
-            widgets={this.state.userWidgets}
-            updateWidget={this.updateWidget}
-            deleteWidget={this.deleteWidget}
-          />
+          <Dashboard widgets={this.state.userWidgets} updateWidget={this.updateWidget} deleteWidget={this.deleteWidget} onReorder={this.onReorder} />
         </Route>
         <Route path="/login" history={this.props.history}>
           <Login logUser={this.logUser} />
@@ -175,9 +184,3 @@ class App extends Component {
 
 export default App;
 
-/* <div className="container md-col-10 d-flex justify-content-start">
-  <div style={{ width: '30%', minWidth: '250px' }} >
-    <Widgets />
-  </div>
-  <Dashboard />
-</div> */
