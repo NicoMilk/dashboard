@@ -106,7 +106,7 @@ class App extends Component {
   addWidget = widgetName => {
     const widgetCmp = this.state.widgets.find((wid) =>
       wid.componentName === widgetName)
-
+    const userWidgets = this.state.userWidgets;
     const widget = {
       id: uuid(),
       name: widgetName,
@@ -122,6 +122,8 @@ class App extends Component {
       .catch((error) => {
         console.error(`"${widget.componentName}" not yet supported`);
       });
+    UserApi.saveUser(this.state.user.id, { widgets: userWidgets.concat(widget) });
+
   }
 
 
