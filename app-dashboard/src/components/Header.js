@@ -16,14 +16,14 @@ class Header extends Component {
   render() {
     return (
       <Navbar bg="dark" variant="dark">
-        <NavLink to="/" className="mr-5"><Navbar.Brand >TF4</Navbar.Brand></NavLink>
+        <NavLink to="/" className="mr-5"><Navbar.Brand >TF4 d'#board</Navbar.Brand></NavLink>
         <Navbar.Toggle />
         { this.props.isLoggedIn && <Widgets addWidget={this.props.addWidget} widgets={this.props.widgets} className="ml-5" />}
 
         <Navbar.Collapse className="justify-content-end">
 
           {this.props.isLoggedIn &&
-            <h5 className="ml-3 text-white-50">{this.props.user.name}</h5>
+            <h5 className="ml-3 pt-2 text-white-50">{this.props.user.name}</h5>
           }
           {!this.props.isLoggedIn && <NavLink className="ml-3" to="/login">Login</NavLink>
           }

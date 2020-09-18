@@ -19,7 +19,7 @@ export class ClockTime extends Component {
     this.timer = window.setInterval(() => {
       this.setState({
         date: new Date()
-      })
+      }, this.props.interval)
     })
   }
 
