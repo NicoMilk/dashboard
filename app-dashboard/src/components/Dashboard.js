@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 //import Widgets from './Widgets'
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 //import axios from 'axios';
 /* import OmdbSummary from './OmdbSummary';
 import OmdbActors from './OmdbActors';
@@ -10,19 +10,14 @@ import Reorder, {
   reorder,
   reorderImmutable,
   reorderFromTo,
-  reorderFromToImmutable
-} from 'react-reorder';
+  reorderFromToImmutable,
+} from "react-reorder";
 
 class Dashboard extends Component {
-
-
-
   render() {
-
-    console.log(this.props.widgets)
+    // console.log(this.props.widgets)
 
     return (
-
       <Reorder
         className="d-flex flex-row flex-wrap justify-content-around align-self-start"
         reorderId="my-list" // Unique ID that is used internally to track this list (required)
@@ -39,27 +34,18 @@ class Dashboard extends Component {
           <div className="custom-placeholder" /> // Custom placeholder element (optional), defaults to clone of dragged element
         }
       >
-
-        {
-          this.props.widgets.map((widget) => (
-            <div key={widget.id}>
-              {widget.cmp}
-            </div>)
-          )
-        }
-
-      </Reorder >
-    )
-
+        {this.props.widgets.map((widget) => (
+          <div key={widget.id}>{widget.cmp}</div>
+        ))}
+      </Reorder>
+    );
   }
-
 }
-
 
 Dashboard.propTypes = {
   widgets: PropTypes.array.isRequired,
   deleteWidget: PropTypes.func.isRequired,
   updateWidget: PropTypes.func.isRequired,
-}
+};
 
 export default Dashboard;

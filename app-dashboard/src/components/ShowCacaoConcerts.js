@@ -22,14 +22,16 @@ export class ShowCacaoConcerts extends Component {
   };
 
   componentDidMount = () => {
-    axios.get(`http://localhost:3002/concerts`).then((res) => {
-      this.setState({
-        concerts: res.data,
-        color: this.props.params.color,
-        bgColor:
-          this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
+    if (this.props.params) {
+      axios.get(`http://localhost:3002/concerts`).then((res) => {
+        this.setState({
+          concerts: res.data,
+          color: this.props.params.color,
+          bgColor:
+            this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
+        });
       });
-    });
+    }
   };
 
   // setColor = (e) => {

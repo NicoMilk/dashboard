@@ -20,21 +20,21 @@ export class ClockTime extends Component {
         date: new Date(),
         color: this.props.params.color,
         showSeconds: this.props.params.showSeconds,
-        bgColor: this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
+        bgColor:
+          this.props.params.color === "yellow" ? "bg-warning" : "bg-info",
       });
     } else {
       this.setState({
-        date: new Date()
+        date: new Date(),
       });
     }
-    console.log(this.props.timer)
+    // console.log(this.props.timer)
     this.timer = window.setInterval(() => {
       this.setState({
         date: new Date(),
       });
     }, this.props.timer);
   }
-
 
   handleChange = (e) => {
     this.setState({ showSeconds: e.target.checked });
