@@ -15,6 +15,15 @@ export class News extends Component {
     news: [],
   }
 
+  componentDidMount() {
+    if (this.props.params) {
+      axios.get(`https://newsapi.org/v2/top-headlines?sources=${this.props.params.value}&apiKey=aaa2efb8ddb043ecadd6950489da316f`)
+        .then(res => {
+          this.setState({ news: res.data.articles })
+          this.props.updateWidget(this.props.id, { value: this.state.value })
+        })
+    }
+  }
 
   reload() {
     this.componentDidMount();
@@ -28,13 +37,8 @@ export class News extends Component {
     axios.get(`https://newsapi.org/v2/top-headlines?sources=${this.state.value}&apiKey=aaa2efb8ddb043ecadd6950489da316f`)
       .then(res => {
         this.setState({ news: res.data.articles })
-        console.log(res.data.articles)
-
+        this.props.updateWidget(this.props.id, { value: this.state.value })
       })
-  }
-
-  click() {
-    console.log("click")
   }
 
 
@@ -96,9 +100,10 @@ export class News extends Component {
 }
 
 News.propTypes = {
-  value: PropTypes.string,
+  params: PropTypes.object,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
+  updateWidget: PropTypes.func.isRequired,
 }
 
 export default News

@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
+import Form from 'react-bootstrap/Form'
+import Accordion from 'react-bootstrap/Accordion'
+import * as Icon from 'react-bootstrap-icons';
 
 const mapStyles = {
-  width: '50%',
-  height: '50%',
+  width: '450px',
+  height: '300px',
 };
 
 export class MapContainer extends Component {
@@ -24,6 +27,7 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
+      value: 'warning'
     }
   }
 
@@ -63,7 +67,7 @@ export class MapContainer extends Component {
       return React.cloneElement(c, {
         map: this.map,
         google: this.props.google,
-        mapCenter: this.state.currentLocation
+        //mapCenter: this.state.currentLocation
       });
     });
   }
@@ -87,27 +91,31 @@ export class MapContainer extends Component {
     this.loadMap();
 
     axios.get('http://api.citybik.es/v2/networks/velib?')
-    .then(res => {
-      this.setState({stores: res.data.network.stations})
-    }) 
+      .then(res => {
+        this.setState({ stores: res.data.network.stations })
+      })
+
+    if (this.props.params) {
+      this.setState({ value: this.props.params.color })
+    }
   }
 
   displayMarkers = () => {
     return this.state.stores.map((store, index) => {
       return <Marker key={index} id={index} position={{
-       lat: store.latitude,
-       lng: store.longitude
-     }}
-     onClick={this.onMarkerClick} name={store.name} availableBikes={store.free_bikes} emptySlots={store.empty_slots}/> 
+        lat: store.latitude,
+        lng: store.longitude
+      }}
+        onClick={this.onMarkerClick} name={store.name} availableBikes={store.free_bikes} emptySlots={store.empty_slots} />
     })
   }
 
   onMarkerClick = (props, marker, e) =>
-      this.setState({
-        selectedPlace: props,
-        activeMarker: marker,
-        showingInfoWindow: true
-  });
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true,
+    });
 
   recenterMap() {
     const map = this.map;
@@ -130,23 +138,65 @@ export class MapContainer extends Component {
     }
   }
 
+  handleChange = (e) => {
+    this.setState({ value: e.target.value })
+    this.props.updateWidget(this.props.id, { color: e.target.value })
+  }
+
+  /*   handleSubmit = () => {
+      this.props.updateWidget(this.props.id, { color: this.state.value })
+    } */
+
   render() {
     const style = Object.assign({}, mapStyles.map);
+    let fontColor = "text-dark"
+    if (this.state.value === "dark") {
+      fontColor = "text-light"
+    } else {
+      fontColor = "text-dark"
+    }
     return (
+      <div style={{ height: '420px', width: '450px' }} className={'my-4 bg-' + this.state.value}>
+        <Accordion >
+          <div className={'bg-' + this.state.value + ' d-flex justify-content-between p-2'}>
+            <h5 className={'text-center ml-3 p-2 font-weight-bold ' + fontColor}>Maps - Vélib</h5>
+            <div className="text-center ml-3 p-2">
+              <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
+                <Icon.Tools className="" />
+              </Accordion.Toggle>
+              <Icon.XSquareFill onClick={this.props.deleteWidget.bind(this, this.props.id)} color="red" size={30} className="" style={{ cursor: "pointer" }} />
+            </div>
+
+          </div>
+
+          <div className="p-3">
+
+            <Accordion.Collapse eventKey="0">
+              <div className="d-flex flex-row p-3 align-items-start">
+                <Form.Control value={this.state.value} onChange={this.handleChange} as="select" custom>
+                  <option >Choisir un thème</option>
+                  <option value="dark">Sombre</option>
+                  <option value="light">Clair</option>
+                </Form.Control>
+                {/* <button onClick={this.handleSubmit} className="btn-dark">OK</button>} */}
+              </div>
+            </Accordion.Collapse>
+          </div>
+        </Accordion>
         <Map
-        centerAroundCurrentLocation    
-        google={this.props.google}
+          centerAroundCurrentLocation
+          google={this.props.google}
           zoom={14}
           style={mapStyles}
-          initialCenter={{ 
+          initialCenter={{
             lat: 48.856614,
             lng: 2.3522219
           }}
         >
           {this.displayMarkers()}
           <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}
           >
             <div>
               <h1>{this.state.selectedPlace.name}</h1>
@@ -156,11 +206,13 @@ export class MapContainer extends Component {
           </InfoWindow>
           <div>
             <div style={style} ref="map">
-            Loading map...
+              Loading map...
             </div>
             {this.renderChildren()}
           </div>
         </Map>
+      </div>
+
     );
   }
 }
@@ -174,6 +226,8 @@ MapContainer.defaultProps = {
   centerAroundCurrentLocation: false,
   visible: true
 };
+
+
 
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyAMEzFrubmy2ZyHNFuzYe3ewdPbWiMcGCE'

@@ -84,9 +84,10 @@ class OmdbSummary extends Component {
 }
 
 OmdbSummary.propTypes = {
-  value: PropTypes.object,
+  params: PropTypes.object,
   id: PropTypes.string,
   deleteWidget: PropTypes.func.isRequired,
+  updateWidget: PropTypes.func.isRequired,
 }
 
 export default OmdbSummary;

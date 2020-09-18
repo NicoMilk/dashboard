@@ -55,7 +55,7 @@ class Login extends Component {
       return <Redirect to='/' />;
     }
     return (
-      <div className="login">
+      <div className="login my-4">
         <Row className="justify-content-center">
           <Col md="8">
             <Card>

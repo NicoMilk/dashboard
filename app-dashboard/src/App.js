@@ -74,7 +74,7 @@ class App extends Component {
     if (token) {
       UserApi.auth()
         .then((response) => {
-
+          console.log("recup widget")
           this.setState({ userWidgets: response.data.widgets, isLoggedIn: true, userId: response.data.id })
         })
         .catch(error => {
@@ -132,10 +132,21 @@ class App extends Component {
       const list = state.userWidgets.filter(item => item.id !== widgetId);
       console.log(list);
       return list;
-
     };
-    this.setState({ userWidgets: userWidgets(this.state) });
-    console.log(this.state.userWidgets, userWidgets(this.state));
+
+    const newUserWidget = userWidgets(this.state);
+    this.setState({ userWidgets: newUserWidget });
+    const widgets = [];
+    newUserWidget.map(wid => {
+      let temp = {
+        name: wid.name,
+        id: wid.id,
+        componentName: wid.componentName,
+        params: wid.params
+      }
+      widgets.push(temp);
+    })
+    UserApi.saveUser(this.state.user.id, { widgets: widgets })
   }
 
 

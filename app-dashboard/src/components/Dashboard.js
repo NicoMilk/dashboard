@@ -30,7 +30,8 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   widgets: PropTypes.array.isRequired,
-  deleteWidget: PropTypes.func.isRequired
+  deleteWidget: PropTypes.func.isRequired,
+  updateWidget: PropTypes.func.isRequired,
 }
 
 export default Dashboard;
