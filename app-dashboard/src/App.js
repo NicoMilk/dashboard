@@ -24,7 +24,7 @@ class App extends Component {
     },
     userId: "",
     userWidgets: [],
-    widgets: []
+    widgets: [],
   }
 
 
@@ -34,17 +34,22 @@ class App extends Component {
     if (token) {
       const auth = await UserApi.auth();
       const rawWidgets = await WidgetApi.getWidgets();
-      auth.data.widgets.map(async wid => await this.addComponent(wid));
+      auth.data.widgets.map(async wid => await this.addComponent(wid, rawWidgets.data));
       this.setState({ user: auth.data, isLoggedIn: true, widgets: rawWidgets.data });
+      //console.log("raw widget", this.state.widgets)
+      //console.log("userWidget", auth.data.widgets)
     }
   }
 
-  addComponent = async widget => {
+  addComponent = async (widget, rawWidgets) => {
     const { componentName } = widget;
-    console.log("addwid", widget)
+    const widgetCmp = rawWidgets.find((wid) =>
+      wid.componentName === widget.componentName)
+    console.log(widgetCmp.timer)
+
     import(`./components/${componentName}.js`)
       .then(Component => {
-        widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
+        widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} timer={widgetCmp.timer} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
         this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
       })
       .catch(error => {
@@ -69,26 +74,23 @@ class App extends Component {
   }
 
   //recupère les widget de la db
-  getWidgets = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      UserApi.auth()
-        .then((response) => {
-          console.log("recup widget")
-          this.setState({ userWidgets: response.data.widgets, isLoggedIn: true, userId: response.data.id })
-        })
-        .catch(error => {
-          console.log(error)
-        });
-    }
-  }
+  /*   getWidgets = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        UserApi.auth()
+          .then((response) => {
+            this.setState({ userWidgets: response.data.widgets, isLoggedIn: true, userId: response.data.id })
+          })
+          .catch(error => {
+            console.log(error)
+          });
+      }
+    } */
 
   updateWidget = (widgetId, params) => {
 
-    console.log(widgetId, params, this.state.userWidgets);
     const userWidget = this.state.userWidgets.find(element => element.id === widgetId);
     userWidget.params = params;
-    console.log(this.state.userWidgets);
 
     const widgets = [];
     this.state.userWidgets.map(wid => {
@@ -105,17 +107,18 @@ class App extends Component {
   }
 
   addWidget = widgetName => {
-    console.log(widgetName);
+    const widgetCmp = this.state.widgets.find((wid) =>
+      wid.componentName === widgetName)
+
     const widget = {
       id: uuid(),
       name: widgetName,
       componentName: widgetName,
       value: "",
     }
-    console.log(`Loading ${widget.componentName} component...`, widget);
     import(`./components/${widget.componentName}.js`)
       .then(Component => {
-        widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
+        widget.cmp = (<Component.default key={widget.id} params={widget.params} id={widget.id} timer={widgetCmp.timer} deleteWidget={this.deleteWidget} updateWidget={this.updateWidget} />);
         this.setState({ userWidgets: this.state.userWidgets.concat(widget) });
       })
       .catch(error => {
@@ -125,12 +128,9 @@ class App extends Component {
 
   deleteWidget = widgetId => {
 
-    console.log(this.state.userWidgets);
-    console.log("deleting...", widgetId);
 
     const userWidgets = (state) => {
       const list = state.userWidgets.filter(item => item.id !== widgetId);
-      console.log(list);
       return list;
     };
 

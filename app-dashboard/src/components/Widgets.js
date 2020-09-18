@@ -14,7 +14,7 @@ export class Widgets extends Component {
   }
 
   render() {
-    console.log(this.props)
+
     return <DropdownButton variant="success" id="dropdown-basic-button" title="Ajouter un widget">
       {this.props.widgets.map((widget) => (
         <div className="" key={widget.id}>

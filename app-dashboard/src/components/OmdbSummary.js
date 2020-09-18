@@ -11,24 +11,34 @@ class OmdbSummary extends Component {
   state = {
     value: '',
     movie: {},
+    reload: true,
+    timer: 3600
   }
+
+
   componentDidMount() {
-    if (this.props.params) {
-      axios.get(`http://www.omdbapi.com/?apikey=89e82fd&t=${this.props.params.value}`)
+    this.timer = window.setInterval(() => {
+      let params;
+      if (this.state.value) {
+        params = this.state.value
+      } else if (this.props.params) {
+        params = this.props.params.value
+      }
+      axios.get(`http://www.omdbapi.com/?apikey=89e82fd&t=${params}`)
         .then(res => {
           if (res.data.Response !== "False") {
             this.setState({ movie: res.data });
           } else {
             this.setState({ movie: { Title: "Not Found", Plot: "pas de résultats pour cette recherche" } });
           }
-
         })
-    }
+    }, this.props.timer)
   }
 
-  reload() {
-    this.componentDidMount();
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
+
 
   handleSubmit = (e) => {
     axios.get(`http://www.omdbapi.com/?apikey=89e82fd&t=${this.state.value}`)
@@ -54,7 +64,7 @@ class OmdbSummary extends Component {
       <Card style={{ width: '25rem' }} className="shadow my-4">
         <Accordion >
           <div className="bg-warning d-flex justify-content-between p-2">
-            <h5 className="text-center ml-3 p-2 font-weight-bold bg-warning ">Résumé de Film</h5>
+            <h5 className="text-center ml-3 p-2 font-weight-bold bg-warning ">Résumé de Film {this.state.refreshCount}</h5>
             <div className="text-center ml-3 p-2">
               <Accordion.Toggle variant="dark" eventKey="0" className="mr-4">
                 <Icon.Tools className="" />

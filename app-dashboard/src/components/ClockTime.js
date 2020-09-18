@@ -10,7 +10,7 @@ export class ClockTime extends Component {
     this.state = {
       date: new Date(),
       showSeconds: true,
-      color: 'yellow'
+      color: 'yellow',
     }
     this.timer = null
   }
@@ -21,7 +21,9 @@ export class ClockTime extends Component {
         date: new Date()
       })
     })
+
   }
+
 
   handleChange = (e) => {
     this.setState({ showSeconds: e.target.checked })

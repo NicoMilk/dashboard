@@ -14,6 +14,8 @@ class OmdbActors extends Component {
     }
 
     componentDidMount() {
+        console.log("timer", this.props.timer)
+
         if (this.props.params) {
             axios.get(`http://www.omdbapi.com/?apikey=89e82fd&t=${this.props.params.value}`)
                 .then(res => {

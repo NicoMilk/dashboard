@@ -16,11 +16,11 @@ export class News extends Component {
   }
 
   componentDidMount() {
+    console.log("did mount News")
     if (this.props.params) {
-      axios.get(`https://newsapi.org/v2/top-headlines?sources=${this.props.params.value}&apiKey=aaa2efb8ddb043ecadd6950489da316f`)
+      axios.get(`https://newsapi.org/v2/top-headlines?sources=${this.props.params.source}&apiKey=aaa2efb8ddb043ecadd6950489da316f`)
         .then(res => {
           this.setState({ news: res.data.articles })
-          this.props.updateWidget(this.props.id, { value: this.state.value })
         })
     }
   }
@@ -37,7 +37,7 @@ export class News extends Component {
     axios.get(`https://newsapi.org/v2/top-headlines?sources=${this.state.value}&apiKey=aaa2efb8ddb043ecadd6950489da316f`)
       .then(res => {
         this.setState({ news: res.data.articles })
-        this.props.updateWidget(this.props.id, { value: this.state.value })
+        this.props.updateWidget(this.props.id, { source: this.state.value })
       })
   }
 
