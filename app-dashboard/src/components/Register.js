@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 /*   */
-import 'bootstrap/dist/css/bootstrap.min.css';
-import UserApi from '../apis/User.js'
+import "bootstrap/dist/css/bootstrap.min.css";
+import UserApi from "../apis/User.js";
 //import { useHistory } from 'react-router-dom'
-import { Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom";
 
 class Register extends Component {
-
-
   state = {
     name: "",
     email: "",
     password: "",
     password2: "",
     redirection: false,
-  }
+  };
 
   register = (e) => {
-    console.log(this.state)
+    // console.log(this.state)
     if (
       this.state.name &&
       this.state.email &&
@@ -27,11 +25,11 @@ class Register extends Component {
       if (this.state.password === this.state.password2) {
         UserApi.register(this.state)
           .then((response) => {
-            console.log(response.data)
+            // console.log(response.data)
             //useHistory.push('/login')
             this.setState({ redirection: true });
           })
-          .catch(error => {
+          .catch((error) => {
             this.errors = 2;
             this.error_message = error.response;
           });
@@ -39,34 +37,40 @@ class Register extends Component {
     } else {
       this.errors = 1;
     }
-  }
+  };
 
   handleChange = (event) => {
     const value = event.target.value;
-    const key = event.target.name
+    const key = event.target.name;
     this.setState({
-      [key]: value
+      [key]: value,
     });
-  }
+  };
 
   render() {
     const { redirection } = this.state;
     if (redirection) {
       //Affichage de la redirection
-      return <Redirect to='/login' />;
+      return <Redirect to="/login" />;
     }
     return (
       <div className="login my-4">
         <div className="row justify-content-center">
           <div className="col-md-8">
             <div className="text-center">
-              <h4 >Enregistrer un compte</h4>
+              <h4>Enregistrer un compte</h4>
               <div className="py-4">
                 <div className="form-group row">
-                  <label xfor="name" className="col-md-4 col-form-label text-md-right">Nom</label>
+                  <label
+                    xfor="name"
+                    className="col-md-4 col-form-label text-md-right"
+                  >
+                    Nom
+                  </label>
                   <div className="col-md-6">
                     <input
-                      value={this.state.name} onChange={this.handleChange}
+                      value={this.state.name}
+                      onChange={this.handleChange}
                       name="name"
                       type="text"
                       className="form-control"
@@ -76,10 +80,16 @@ class Register extends Component {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label xfor="email" className="col-md-4 col-form-label text-md-right">Adresse E-mail</label>
+                  <label
+                    xfor="email"
+                    className="col-md-4 col-form-label text-md-right"
+                  >
+                    Adresse E-mail
+                  </label>
                   <div className="col-md-6">
                     <input
-                      value={this.state.email} onChange={this.handleChange}
+                      value={this.state.email}
+                      onChange={this.handleChange}
                       name="email"
                       type="email"
                       className="form-control"
@@ -89,10 +99,16 @@ class Register extends Component {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label xfor="pass1" className="col-md-4 col-form-label text-md-right">Mot de passe</label>
+                  <label
+                    xfor="pass1"
+                    className="col-md-4 col-form-label text-md-right"
+                  >
+                    Mot de passe
+                  </label>
                   <div className="col-md-6">
                     <input
-                      value={this.state.password} onChange={this.handleChange}
+                      value={this.state.password}
+                      onChange={this.handleChange}
                       name="password"
                       type="password"
                       className="form-control"
@@ -104,10 +120,13 @@ class Register extends Component {
                   <label
                     xfor="pass2"
                     className="col-md-4 col-form-label text-md-right"
-                  >Confirmer le mot de passe</label>
+                  >
+                    Confirmer le mot de passe
+                  </label>
                   <div className="col-md-6">
                     <input
-                      value={this.state.password2} onChange={this.handleChange}
+                      value={this.state.password2}
+                      onChange={this.handleChange}
                       name="password2"
                       type="password"
                       className="form-control"
@@ -119,20 +138,21 @@ class Register extends Component {
                   type="submit"
                   className="btn btn-primary my-4"
                   onClick={this.register}
-                >Créer un compte</button>
+                >
+                  Créer un compte
+                </button>
               </div>
-              {this.state.error === 1 &&
-                <div
-                  className="alert alert-danger mt-2"
-                  role="alert"
-                >Tous les champs doivent être remplis</div>
-              }
+              {this.state.error === 1 && (
+                <div className="alert alert-danger mt-2" role="alert">
+                  Tous les champs doivent être remplis
+                </div>
+              )}
             </div>
-            {this.state.error === 2 && <div
-              className="alert alert-danger mt-2"
-              role="alert"
-            >Cet email existe déjà, veuillez en entrer un nouveau</div>
-            }
+            {this.state.error === 2 && (
+              <div className="alert alert-danger mt-2" role="alert">
+                Cet email existe déjà, veuillez en entrer un nouveau
+              </div>
+            )}
           </div>
         </div>
       </div>
